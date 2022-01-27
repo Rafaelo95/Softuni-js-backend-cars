@@ -1,5 +1,12 @@
 module.exports = {
-  details(req, res) {
-    res.render("details.hbs");
+  async details(req, res) {
+    const id = req.params.id;
+    const car = await req.storage.getById(id);
+
+    if (car) {
+      res.render("details.hbs", { title: `Cars - ${car.name}`, car});
+    } else {
+      res.redirect("/404");
+    }
   },
 };

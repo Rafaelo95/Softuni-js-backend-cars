@@ -2,6 +2,6 @@ module.exports = {
   async home(req, res) {
     const cars = await req.storage.getAll();
     console.log(cars);
-    res.render("index.hbs", { cars });
+    res.render("index.hbs", { cars, title: "Cars" });
   },
 };

@@ -1,5 +1,5 @@
 module.exports = {
   create(req, res) {
-    res.render("create.hbs");
+    res.render("create.hbs", { title: "Cars"});
   },
 };

@@ -21,13 +21,26 @@ async function write(data) {
 
 async function getAll() {
   const data = await read();
-  return Object.entries(data)
-    .map(([id, value]) => Object.assign({}, { id }, value));
+  return Object.entries(data).map(([id, value]) =>
+    Object.assign({}, { id }, value)
+  );
+}
+
+async function getById(id) {
+  const data = await read();
+  const car = data[id];
+
+  if (car) {
+    return Object.assign({}, { id }, car);
+  } else {
+    return undefined;
+  }
 }
 
 module.exports = () => (req, res, next) => {
   req.storage = {
-    getAll
+    getAll,
+    getById
   };
   next();
 };
