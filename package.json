@@ -4,8 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rafaelo95/softuni-js-backend-cars.git"
+  },
+  "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rafaelo95/softuni-js-backend-cars/issues"
+  },
+  "homepage": "https://github.com/Rafaelo95/softuni-js-backend-cars#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "express-handlebars": "^6.0.2"
+  }
 }
