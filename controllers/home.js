@@ -1,5 +1,7 @@
 module.exports = {
-  home(req, res) {
-    res.render("index.hbs");
+  async home(req, res) {
+    const cars = await req.storage.getAll();
+    console.log(cars);
+    res.render("index.hbs", { cars });
   },
 };
