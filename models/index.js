@@ -10,6 +10,7 @@ async function init() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+
   } catch (err) {
     console.log("Error connecting to database" + err.message);
     process.exit(1);

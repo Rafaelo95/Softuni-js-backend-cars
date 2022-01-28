@@ -1,4 +1,5 @@
 const fs = require("fs/promises");
+const Car = require("../models/Car");
 
 async function read() {
   try {
@@ -19,7 +20,22 @@ async function write(data) {
   }
 }
 
+function carViewModel(car) {
+  return {
+    id: car._id,
+    name: car.name,
+    description: car.description,
+    imageUrl: car.imageUrl,
+    price: car.price,
+  };
+}
+
 async function getAll(query) {
+  // https://stackoverflow.com/questions/65822312/solved-handlebars-access-has-been-denied-to-resolve-the-property-name-becaus
+  const cars = await Car.find({});
+  return cars.map((car) => carViewModel(car));
+
+  /*
   const data = await read();
   let cars = Object
     .entries(data)
@@ -39,9 +55,17 @@ async function getAll(query) {
   }
 
   return cars;
+  */
 }
 
 async function getById(id) {
+  const car = await Car.findById(id);
+  if (car) {
+    return carViewModel(car);
+  } else {
+    return undefined;
+  }
+  /*
   const data = await read();
   const car = data[id];
 
@@ -50,14 +74,19 @@ async function getById(id) {
   } else {
     return undefined;
   }
+  */
 }
 
 async function createCar(car) {
+  const result = new Car(car);
+  await result.save();
+  /*
   const cars = await read();
   let id = nextId();
   cars[id] = car;
 
   await write(cars);
+  */
 }
 
 function nextId() {
@@ -73,7 +102,7 @@ async function deleteById(id) {
     delete data[id];
     await write(data);
   } else {
-    throw new Error("No such ID in database")
+    throw new Error("No such ID in database");
   }
 }
 
@@ -84,7 +113,7 @@ async function updateById(id, car) {
     data[id] = car;
     await write(data);
   } else {
-    throw new Error("No such ID in database")
+    throw new Error("No such ID in database");
   }
 }
 

@@ -13,6 +13,7 @@ header ul {
 img {
     height: 200px;
     width: auto;
+    
 }
 
 img.cube {
@@ -22,10 +23,12 @@ img.cube {
 }
 
 img.logo {
-    width: 80px;
     height: 80px;
     padding: 1em;
     float: left;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(246deg) brightness(150%) contrast(103%);
+
+
 }
 
 header {

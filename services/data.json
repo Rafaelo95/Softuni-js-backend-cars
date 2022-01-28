@@ -4,5 +4,11 @@
     "description": "lorem ipsum",
     "imageUrl": "$_59.jpg",
     "price": 15000
+  },
+  "1bf1017b-7ebb": {
+    "name": "VW Golf",
+    "description": "Test description",
+    "imageUrl": "$_27.jpg",
+    "price": 28000
   }
 }
