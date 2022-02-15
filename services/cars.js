@@ -34,7 +34,7 @@ async function getAll(query) {
   console.log(query);
   // https://stackoverflow.com/questions/65822312/solved-handlebars-access-has-been-denied-to-resolve-the-property-name-becaus
   const cars = await Car.find({
-    name: { $regex: query.search, $options: "i" },
+    name: new RegExp(query.search, 'i'),
   });
   return cars.map((car) => carViewModel(car));
 
