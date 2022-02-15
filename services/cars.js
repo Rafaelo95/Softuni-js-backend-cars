@@ -1,24 +1,4 @@
-const fs = require("fs/promises");
 const Car = require("../models/Car");
-
-async function read() {
-  try {
-    const file = await fs.readFile("./services/data.json");
-    return JSON.parse(file);
-  } catch (err) {
-    console.log(err);
-    process.exit(1);
-  }
-}
-
-async function write(data) {
-  try {
-    await fs.writeFile("./services/data.json", JSON.stringify(data, null, 2));
-  } catch (err) {
-    console.log(err);
-    process.exit(1);
-  }
-}
 
 function carViewModel(car) {
   return {
@@ -33,32 +13,26 @@ function carViewModel(car) {
 async function getAll(query) {
   console.log(query);
   // https://stackoverflow.com/questions/65822312/solved-handlebars-access-has-been-denied-to-resolve-the-property-name-becaus
-  const cars = await Car.find({
-    name: new RegExp(query.search, 'i'),
-  });
-  return cars.map((car) => carViewModel(car));
 
-  /*
-  const data = await read();
-  let cars = Object
-    .entries(data)
-    .map(([id, value]) => Object.assign({}, { id }, value)
-  );
-
-  // console.log(query.search);
+  const options = {};
 
   if (query.search) {
-    cars = cars.filter(c => c.name.toLocaleLowerCase().includes(query.search.toLocaleLowerCase()));
+    options.name = new RegExp(query.search, "i");
   }
   if (query.from) {
-    cars = cars.filter(c => c.price >= Number(query.from));
+    options.price = { $gte: Number(query.from) };
   }
   if (query.to) {
-    cars = cars.filter(c => c.price <= Number(query.to));
+    if (!options.price) {
+      options.price = {};
+    }
+
+    options.price.$lte = Number(query.to);
   }
 
-  return cars;
-  */
+  const cars = await Car.find(options);
+
+  return cars.map((car) => carViewModel(car));
 }
 
 async function getById(id) {
@@ -68,56 +42,19 @@ async function getById(id) {
   } else {
     return undefined;
   }
-  /*
-  const data = await read();
-  const car = data[id];
-
-  if (car) {
-    return Object.assign({}, { id }, car);
-  } else {
-    return undefined;
-  }
-  */
 }
 
 async function createCar(car) {
   const result = new Car(car);
   await result.save();
-  /*
-  const cars = await read();
-  let id = nextId();
-  cars[id] = car;
-
-  await write(cars);
-  */
-}
-
-function nextId() {
-  return "xxxxxxxx-xxxx".replace(/x/g, () =>
-    ((Math.random() * 16) | 0).toString(16)
-  );
 }
 
 async function deleteById(id) {
-  const data = await read();
-
-  if (data.hasOwnProperty(id)) {
-    delete data[id];
-    await write(data);
-  } else {
-    throw new Error("No such ID in database");
-  }
+  await Car.findByIdAndDelete(id);
 }
 
 async function updateById(id, car) {
-  const data = await read();
-
-  if (data.hasOwnProperty(id)) {
-    data[id] = car;
-    await write(data);
-  } else {
-    throw new Error("No such ID in database");
-  }
+  await Car.findByIdAndUpdate(id, car);
 }
 
 module.exports = () => (req, res, next) => {
